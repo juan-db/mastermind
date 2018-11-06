@@ -1,7 +1,7 @@
 /**
  *	All the available colors for the pegs.
  */
-var PegColorsEnum = Object.freeze(["red", "green", "blue", "orange", "yellow", "pink", "cyan", "purple"])
+var PegColorsEnum = Object.freeze(["red", "blue", "orange", "yellow", "pink", "cyan", "purple"])
 
 /**
  *	The final sequence to guess.
@@ -55,9 +55,29 @@ function correctColors(guess) {
 	return correct - correctPositions(guess);
 }
 
+/* add columns and rows to the board */
+let boardElement = document.getElementById("board");
+for (let y = 1; y <= 9; ++y) {
+	for (let x = 1; x <= 7; ++x) {
+		let element = document.createElement("div");
+		element.style.cssText = `grid-row: ${y}; grid-column: ${x}`;
+		element.style.backgroundColor = (y % 2 === 0) ? ((x % 2 === 0) ? "gray" : "lightgray") : ((x % 2 === 0) ? "lightgray" : "gray");
+		boardElement.appendChild(element);
+	}
+}
+
+/* generate palette */
+for (let x = 0; x < PegColorsEnum.length; ++x) {
+	let element = document.createElement("div");
+	element.style.cssText = `grid-row: 10; grid-column: ${x + 1}`;
+	element.style.backgroundColor = PegColorsEnum[x];
+	boardElement.appendChild(element);
+}
+
+winSequence = generateRandomSequence(PegColorsEnum, 5);
+
 /* debug */
 {
-	winSequence = [PegColorsEnum[0], PegColorsEnum[1], PegColorsEnum[0], PegColorsEnum[1]];
 	let guess = winSequence.slice();
 	guess[0] = winSequence[1];
 	guess[1] = winSequence[0];

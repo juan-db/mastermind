@@ -1,0 +1,13 @@
+#board {
+	display: inline-grid;
+	grid-template-columns: repeat(7, 60px); /* 1 column on the left for white pegs,
+												5 columns in the center for guessed pegs,
+												1 column on the right for black pegs */
+	grid-template-rows: repeat(10, 60px); /* 8 rows for guesses,
+											 1 row for final code,
+											 1 row for palette */
+}
+
+body {
+	text-align: center;
+}
