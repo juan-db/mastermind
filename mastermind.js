@@ -99,36 +99,26 @@ function createElement(document, type, classes, cssText) {
 	}
 
 	for (let y = 2; y <= allowedGuesses + 1; ++y) {
-		let whitePinContainer = document.createElement("div");
-		whitePinContainer.style.cssText = `grid-row: ${y}; grid-column: 1;`;
-		whitePinContainer.classList.add("feedback-pin-container");
+		let whitePinContainer = createElement(document, "div", ["feedback-pin-container"], `grid-row: ${y}; grid-column: 1;`);
 		boardElement.appendChild(whitePinContainer);
 
-		let blackPinContainer = document.createElement("div");
-		blackPinContainer.style.cssText = `grid-row: ${y}; grid-column: ${sequenceLength + 2};`;
-		blackPinContainer.classList.add("feedback-pin-container");
+		let blackPinContainer = createElement(document, "div", ["feedback-pin-container"], `grid-row: ${y}; grid-column: ${sequenceLength + 2};`);
 		boardElement.appendChild(blackPinContainer);
 	}
 
 	/* generate guess pin containers */
 	for (let y = 1; y <= 9; ++y) {
 		for (let x = 2; x <= 5; ++x) {
-			let element = document.createElement("div");
-			element.style.cssText = `grid-row: ${y}; grid-column: ${x};`;
-			element.classList.add("pin-container");
-			boardElement.appendChild(element);
-
-			let pin = document.createElement("div");
-			pin.classList.add("pin");
+			let element = createElement(document, "div", ["pin-container"], `grid-row: ${y}; grid-column: ${x};`);
+			let pin = createElement(document, "div", ["pin"], "");
 			element.appendChild(pin);
+			boardElement.appendChild(element);
 		}
 	}
 
 	/* generate palette */
 	for (let x = 0; x < PegColorsEnum.length; ++x) {
-		let element = document.createElement("div");
-		element.style.cssText = `grid-row: 10; grid-column: ${x + 1}`;
-		element.style.backgroundColor = PegColorsEnum[x];
+		let element = createElement(document, "div", [], `grid-row: 10; grid-column: ${x + 1}; background-color: ${PegColorsEnum[x]};`);
 		boardElement.appendChild(element);
 	}
 }
