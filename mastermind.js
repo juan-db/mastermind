@@ -89,14 +89,3 @@ for (let x = 0; x < PegColorsEnum.length; ++x) {
 }
 
 winSequence = generateRandomSequence(PegColorsEnum, 5);
-
-/* debug */
-{
-	let guess = winSequence.slice();
-	guess[0] = winSequence[1];
-	guess[1] = winSequence[0];
-	console.log("winSequence .: " + winSequence);
-	console.log("guess .......: " + guess);
-	console.log(correctColors(guess));
-	console.log(correctPositions(guess));
-}
