@@ -1,17 +1,31 @@
-/* game setting variables */
-let sequenceLength = 4;
-let allowedGuesses = 8;
-
+// =============================================================================
+// ===== VARIABLES =============================================================
+// =============================================================================
 
 /**
  *	All the available colors for the pegs.
  */
-var PegColorsEnum = Object.freeze(["red", "blue", "orange", "yellow", "pink", "cyan", "purple"])
+var PegColorsEnum = Object.freeze(["red", "blue", "orange", "yellow", "pink", "cyan", "purple"]);
+
+/* game setting variables */
+let sequenceLength = 4;
+let allowedGuesses = 8;
+
+/**
+ * The player's previous guesses.
+ * Array of arrays of peg colors.
+ */
+let guesses = [];
 
 /**
  *	The final sequence to guess.
  */
 var winSequence = []
+
+
+// =============================================================================
+// ===== GAME LOGIC ============================================================
+// =============================================================================
 
 function generateRandomSequence(colors, sequenceLength) {
 	let output = [];
@@ -60,6 +74,29 @@ function correctColors(guess) {
 	return correct - correctPositions(guess);
 }
 
+function makeGuess(guess) {
+	guesses.push(guess);
+
+	let whitePinContainer = document.getElementById(`white-pin-container-guess-${guesses.length}`);
+	let correctColorsCount = correctColors(guess);
+	let correctColorsDisplay = createElement(document, "span", ["feedback-count-display"], "");
+	let correctColorsCountElement = document.createTextNode(correctColorsCount);
+	correctColorsDisplay.appendChild(correctColorsCountElement);
+	whitePinContainer.appendChild(correctColorsDisplay);
+
+	let blackPinContainer = document.getElementById(`black-pin-container-guess-${guesses.length}`);
+	let correctPositionsCount = correctPositions(guess);
+	let correctPositionsDisplay = createElement(document, "span", ["feedback-count-display"], "");
+	let correctPositionsCountElement = document.createTextNode(correctPositionsCount);
+	correctPositionsDisplay.appendChild(correctPositionsCountElement);
+	blackPinContainer.appendChild(correctPositionsDisplay);
+}
+
+
+// =============================================================================
+// ===== UTILITY FUNCTIONS =====================================================
+// =============================================================================
+
 /**
  * @param document	Document to use to create the element.
  * @param type		Type of element to create (e.g. div).
@@ -73,9 +110,16 @@ function createElement(document, type, classes, cssText) {
 	for (currentClass of classes) {
 		element.classList.add(currentClass);
 	}
-	element.style.cssText += cssText;
+	if (cssText.trim().length > 0) {
+		element.style.cssText += cssText;
+	}
 	return element;
 }
+
+
+// =============================================================================
+// ===== PAGE SETUP ============================================================
+// =============================================================================
 
 /* populate game board */
 {
@@ -100,9 +144,11 @@ function createElement(document, type, classes, cssText) {
 
 	for (let y = 2; y <= allowedGuesses + 1; ++y) {
 		let whitePinContainer = createElement(document, "div", ["feedback-pin-container"], `grid-row: ${y}; grid-column: 1;`);
+		whitePinContainer.id = `white-pin-container-guess-${allowedGuesses - (y - 2)}`;
 		boardElement.appendChild(whitePinContainer);
 
 		let blackPinContainer = createElement(document, "div", ["feedback-pin-container"], `grid-row: ${y}; grid-column: ${sequenceLength + 2};`);
+		blackPinContainer.id = `black-pin-container-guess-${allowedGuesses - (y - 2)}`;
 		boardElement.appendChild(blackPinContainer);
 	}
 
@@ -124,3 +170,4 @@ function createElement(document, type, classes, cssText) {
 }
 
 winSequence = generateRandomSequence(PegColorsEnum, 4);
+makeGuess(["yellow", "orange", "red", "blue"]);

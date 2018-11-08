@@ -1,11 +1,30 @@
+#board-container {
+	display: inline-block;
+	background-color: #6a6a6a;
+	padding: 30px;
+	border-radius: 20px;
+}
+
 #board {
 	display: inline-grid;
+	grid-row-gap: 4px;
+	row-gap: 4px;
 }
 
 .feedback-pin-container {
 	background-color: darkgray;
 	margin: 0px;
 	padding: 0px;
+}
+
+.feedback-count-display {
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	width: 80%;
+	height: 80%;
+	padding: 10%;
+	font-size: 250%;
 }
 
 .feedback-pin {
@@ -33,4 +52,5 @@
 
 body {
 	text-align: center;
+	font-family: arial;
 }
