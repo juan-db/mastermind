@@ -78,8 +78,12 @@ function correctColors(guess) {
 	return correct - correctPositions(guess);
 }
 
-function makeGuess(guess) {
+function makeGuess() {
+	let guess = currentGuess.slice();
 	guesses.push(guess);
+	currentGuess = [];
+	let submitButton = document.querySelector("#submitButton");
+	submitButton.disabled = true;
 
 	let whitePinContainer = document.getElementById(`white-pin-container-guess-${guesses.length}`);
 	let correctColorsCount = correctColors(guess);
@@ -131,7 +135,7 @@ function initializeBoard() {
 	let boardElement = document.getElementById("board");
 	/* set board grid dimensions */
 	boardElement.style.cssText += `grid-template-columns: repeat(${sequenceLength + 2}, 60px);`
-								  + `grid-template-rows: repeat(${allowedGuesses + 2}, 60px);`;
+								  + `grid-template-rows: repeat(${allowedGuesses + 3}, 60px);`;
 
 	/* generate feedback pin containers */
 	{
@@ -165,6 +169,10 @@ function initializeBoard() {
 				if (guesses.length >= 9 - y) {
 					this.style.backgroundColor = selectedColor;
 					currentGuess[x - 2] = selectedColor;
+					if (currentGuess.length === sequenceLength) {
+						let submitButton = document.querySelector("#submitButton");
+						submitButton.disabled = false;
+					}
 				}
 			});
 			element.appendChild(pin);
@@ -174,7 +182,7 @@ function initializeBoard() {
 
 	/* generate palette */
 	for (let x = 0; x < PegColorsEnum.length; ++x) {
-		let element = createElement(document, "div", [], `grid-row: 10; grid-column: ${x + 1}; background-color: ${PegColorsEnum[x]};`);
+		let element = createElement(document, "div", [], `grid-row: ${10 + (x / (sequenceLength + 2))}; grid-column: ${x % (sequenceLength + 2) + 1}; background-color: ${PegColorsEnum[x]};`);
 		element.addEventListener("click", function() { selectedColor = element.style.backgroundColor; });
 		boardElement.appendChild(element);
 	}
