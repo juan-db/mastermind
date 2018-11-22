@@ -3,12 +3,17 @@
 <head>
 	<title>Mastermind</title>
 	<link rel="stylesheet" tpye="text/css" href="styles.css">
+	<script src="mastermind.js"></script>
 </head>
 <body>
 	<div id="board-container">
 		<div id="board">
 		</div>
 	</div>
-	<script src="mastermind.js"></script>
+	<script>
+		// Initialization
+		initializeBoard();
+		winSequence = generateRandomSequence(PegColorsEnum, 4);
+	</script>
 </body>
 </html>

@@ -17,10 +17,14 @@ let allowedGuesses = 8;
  */
 let guesses = [];
 
+var currentGuess = [];
+
 /**
  *	The final sequence to guess.
  */
 var winSequence = []
+
+var selectedColor;
 
 
 // =============================================================================
@@ -122,7 +126,7 @@ function createElement(document, type, classes, cssText) {
 // =============================================================================
 
 /* populate game board */
-{
+function initializeBoard() {
 	/* game board */
 	let boardElement = document.getElementById("board");
 	/* set board grid dimensions */
@@ -157,6 +161,12 @@ function createElement(document, type, classes, cssText) {
 		for (let x = 2; x <= 5; ++x) {
 			let element = createElement(document, "div", ["pin-container"], `grid-row: ${y}; grid-column: ${x};`);
 			let pin = createElement(document, "div", ["pin"], "");
+			pin.addEventListener("click", function() {
+				if (guesses.length >= 9 - y) {
+					this.style.backgroundColor = selectedColor;
+					currentGuess[x - 2] = selectedColor;
+				}
+			});
 			element.appendChild(pin);
 			boardElement.appendChild(element);
 		}
@@ -165,9 +175,7 @@ function createElement(document, type, classes, cssText) {
 	/* generate palette */
 	for (let x = 0; x < PegColorsEnum.length; ++x) {
 		let element = createElement(document, "div", [], `grid-row: 10; grid-column: ${x + 1}; background-color: ${PegColorsEnum[x]};`);
+		element.addEventListener("click", function() { selectedColor = element.style.backgroundColor; });
 		boardElement.appendChild(element);
 	}
 }
-
-winSequence = generateRandomSequence(PegColorsEnum, 4);
-makeGuess(["yellow", "orange", "red", "blue"]);
